@@ -2,31 +2,57 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="Style.css">
+		
+		 <!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 		<title>Turnin</title>
 	</head>
 	
 	<body id = "body-main">
-		<nav id="main-nav">
-			<ul>
-				<li><a href="SignUp.html">Sign Up</a></li>
-				<li><a href="SignIn.html">Sign In</a></li>
-				<li><a href="FindSpace.html">Find Sharespace</a></li>
-			</ul>
-		</nav>
-		
-		<div id="wrapper">
-			<div id="hero">
-				<div class="header">
-				<h1> Turnin </h1>
+		<nav class="navbar navbar-inverse navbar-static-top">
+		  <div class="container-fluid">
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <a class="navbar-brand" href="#">TurnIn</a>
 				</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				  <ul class="nav navbar-nav">
+					<li class="active"><a href="MainPage.html">Home</a></li>
+					<li><a href="#">Find Storagespace</a></li>
+				  </ul>
+				  <ul class="nav navbar-nav navbar-right">
+					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				  </ul>
 			</div>
-			<div id="content">
-				<h2> A whole new way to turn in assignments </h2>
-				<p> Blah blah explanation blah blah</p>
+		  </div>
+		</nav> 
+		
+		<div class="jumbotron" id="hero">
+			<div class="header">
+			<h1> Turnin </h1>
 			</div>
-			<div id="footer">
-				<img src="ui_logo.png" width="200" height="100" id="html_css_js">
-			</div>
+		</div>
+		
+		<div id="content">
+			<h2> A whole new way to turn in assignments </h2>
+			<p> Blah blah explanation blah blah</p>
+		</div>
+		
+		<div id="footer">
+			<img src="ui_logo.png" width="200" height="100" id="html_css_js">
 		</div>
 	</body>
 </html>
