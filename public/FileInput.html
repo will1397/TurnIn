@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="project">
+<head>
+	<meta charset="UTF-8">
+	<title> TurnIn </title>
+	<link rel="stylesheet" type="text/css" href="Style.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+	
+	
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-resource.min.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-route.min.js">
+   </script>
+    <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
+    <script src="project.js"></script>
+    <script src="project-list.js"></script>
+</head>
+
+<body>
+
+<div ng-view></div>
+
+<form id="upload" action="upload.php" method="POST" enctype="multipart/form-data">
+
+	<fieldset>
+		<legend>HTML File Upload</legend>
+
+		<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
+		
+		<div id = "fileinput">
+			<label for = "file">Attach Files</label>
+			<input type="file" id="file" name="file" multiple/>
+		</div>
+
+		<div id="submitbutton">
+		  <button type="submit">Upload Files</button>
+		</div>
+
+	</fieldset>
+
+</form>
+</body>
+</html>
