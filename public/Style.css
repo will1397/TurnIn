@@ -11,6 +11,10 @@
 	font-size: 15px;
 }
 
+#body-signup {
+  background-image:url(https://static.vecteezy.com/system/resources/previews/000/095/282/original/unique-polygon-background-vector.jpg);
+}
+
 #hero{
   background-image:url(https://static.vecteezy.com/system/resources/previews/000/095/282/original/unique-polygon-background-vector.jpg);
   background-size:cover;
@@ -54,4 +58,28 @@
 
 #html_css_js {
 	margin: auto;
+}
+
+#success_message{ display: none;}
+
+#contact_form input:focus:invalid, .contact_form textarea:focus:invalid { /* when a field is considered invalid by the browser */
+    background: #fff no-repeat 98% center;
+    box-shadow: 0 0 5px #d45252;
+    border-color: #b03535
+}
+
+#contact_form input:required:valid, .contact_form textarea:required:valid { /* when a field is considered valid by the browser */
+    background: #fff url no-repeat 98% center;
+    box-shadow: 0 0 5px #5cd053;
+    border-color: #28921f;
+}
+
+#signup-container {
+	display: table;
+}
+
+#contact_form {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
 }
