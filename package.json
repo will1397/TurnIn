@@ -8,7 +8,10 @@
     "angular-route": "^1.6.6",
     "bootstrap": "^3.3.7",
     "bootstrap-validator": "^0.11.9",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "passport": "^0.4.0",
+    "socket.io": "^2.0.4"
   },
   "devDependencies": {},
   "scripts": {

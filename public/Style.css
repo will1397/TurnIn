@@ -38,6 +38,11 @@
 	margin-bottom: 0!important;
 }
 
+.navbar-nav li {
+  float: none;
+  text-align: center;
+}
+
 #content{
   padding:100px 50px;
   text-align:center;
