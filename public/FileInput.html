@@ -1,48 +1,73 @@
 <!DOCTYPE html>
-<html ng-app="project">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title> TurnIn </title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>TurnIn</title>
+	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="Style.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/>
-	<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-	
-	
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-resource.min.js">
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular-route.min.js">
-   </script>
-    <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
-    <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
-    <script src="project.js"></script>
-    <script src="project-list.js"></script>
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
+<body id="fileinput-body">
 
-<body>
-
-<div ng-view></div>
-
-<form id="upload" action="upload.php" method="POST" enctype="multipart/form-data">
-
-	<fieldset>
-		<legend>HTML File Upload</legend>
-
-		<input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="300000" />
-		
-		<div id = "fileinput">
-			<label for = "file">Attach Files</label>
-			<input type="file" id="file" name="file" multiple/>
+<nav class="navbar navbar-inverse navbar-static-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="">TurnIn</a>
 		</div>
-
-		<div id="submitbutton">
-		  <button type="submit">Upload Files</button>
+		<div class="collapse navbar-collapse" id="myNavbar">
+			<ul class="nav navbar-nav">
+				<li><a href="MainPage.html">Home</a></li>
+				<li><a href="#">Find Storagespace</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="SignUp.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+						<li><a href="Login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+						<li class="divider"></li>
+						<li><button type="submit" class="btn btn-primary" ><span class="glyphicon glyphicon-log-out"></span> Logout</button></li>
+					</ul>
+				</li>
+			</ul>
 		</div>
+	</div>
+</nav>
 
-	</fieldset>
+<div class="container" id="file-container">
+	<div class="row" id="file-row">
+		<div class="col-xs-12">
+			<div class="well well-lg">
+				<span id="uploadicon" class="glyphicon glyphicon-inbox"></span>
+				<h2>File Upload</h2>
+				<div class="progress">
+					<div class="progress-bar" role="progressbar"></div>
+				</div>
+				<button class="btn btn-lg upload-btn" type="button">Submit</button>
+				</div>
+		</div>
+	</div>
+</div>
 
-</form>
+<input id="upload-input" type="file" name="uploads[]" multiple="multiple"></br>
+
+<script src="upload.js"></script>
 </body>
 </html>

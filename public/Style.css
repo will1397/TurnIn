@@ -12,7 +12,12 @@
 }
 
 #body-signup {
-  background-image:url(https://static.vecteezy.com/system/resources/previews/000/095/282/original/unique-polygon-background-vector.jpg);
+    background-image:url(https://static.vecteezy.com/system/resources/previews/000/095/282/original/unique-polygon-background-vector.jpg);
+}
+
+#fileinput-body {
+    background-image:url(https://static.vecteezy.com/system/resources/previews/000/095/282/original/unique-polygon-background-vector.jpg);
+    text-align: center;
 }
 
 #hero{
@@ -88,4 +93,28 @@
 	display: table-cell;
 	text-align: center;
 	vertical-align: middle;
+}
+
+.upload-btn {
+    border: none;
+    color: #FFFFFF;
+    background-color: #337AB7;
+}
+
+.panel-body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#upload-input {
+    display: none;
+}
+
+#uploadicon {
+    font-size: 5em;
+    color: #9CA3A9;
+}
+
+#file-container {
+    padding: 40px;
 }

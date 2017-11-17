@@ -29,7 +29,7 @@
 			<div class="collapse navbar-collapse" id="myNavbar">
 				  <ul class="nav navbar-nav">
 					<li><a href="MainPage.html">Home</a></li>
-					<li><a href="#">Find Storagespace</a></li>
+					<li><a href="FileInput.html">Find Storagespace</a></li>
 				  </ul>
 				  <ul class="nav navbar-nav navbar-right">
 				  	<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
@@ -37,7 +37,7 @@
 							<li><a href="SignUp.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 							<li><a href="Login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 							<li class="divider"></li>
-							<li><button type="submit" class="btn btn-primary" ><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+							<li><button type="submit" class="btn btn-primary" ><span class="glyphicon glyphicon-log-out"></span> Logout</button></li>
 						</ul>
 					</li>
 				  </ul>
@@ -50,26 +50,15 @@
 			<fieldset>
 
 			<!-- Form Name -->
-			<legend><center><h2><b>Sign Up</b></h2></center></legend><br>
+			<legend><h2><b>Sign Up</b></h2></legend><br>
 
 			<!-- Text input-->
 			<div class="form-group">
-			  <label class="col-md-4 control-label">First Name</label>  
+			  <label class="col-md-4 control-label">Name</label>
 			  <div class="col-md-4 inputGroupContainer">
 			  <div class="input-group">
 			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-			  <input  name="first_name" placeholder="First Name" class="form-control"  type="text" required>
-				</div>
-			  </div>
-			</div>
-
-			<!-- Text input-->
-			<div class="form-group">
-			  <label class="col-md-4 control-label" >Last Name</label> 
-				<div class="col-md-4 inputGroupContainer">
-				<div class="input-group">
-			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-			  <input name="last_name" placeholder="Last Name" class="form-control"  type="text" required>
+			  <input  name="first_name" placeholder="First and Last Name" class="form-control"  type="text" required>
 				</div>
 			  </div>
 			</div>
@@ -96,19 +85,6 @@
 			  <input name="user_password" placeholder="Password" class="form-control"  type="password" required
 					 pattern="([a-zA-Z]|\d){6,}"
 					 title="Password must be at least 6 characters long">
-				</div>
-			  </div>
-			</div>
-
-			<!-- Text input-->
-				   <div class="form-group">
-			  <label class="col-md-4 control-label">Email</label>  
-				<div class="col-md-4 inputGroupContainer">
-				<div class="input-group">
-					<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-			  <input name="email" placeholder="E-Mail Address" class="form-control"  type="text" required 
-					 pattern="[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]+"
-					 title="Email should contain a '@' followed by a '.'">
 				</div>
 			  </div>
 			</div>
