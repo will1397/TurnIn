@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 const bodyParser = require('body-parser');
+var path = require('path');
+var formidable = require('formidable');
+var fs = require('fs');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var passport = require('passport');
@@ -96,6 +99,26 @@ app.post('/SignUp.html', function(req, res) {
 	if (req.body.user_name && req.body.user_password) {
 		//check if username and password can be used with call to MySQL DB
 	}
+});
+
+app.post('/upload', function(req, res) {
+	var form = new formidable.IncomingForm();
+	form.multiples = true;
+
+	form.uploadDir = (__dirname + '/uploads');
+	form.on('file', function(field, file) {
+		fs.rename(file.path, path.join(form.uploadDir, file.name));
+	});
+
+	form.on('error', function(err) {
+		console.log(err);
+	});
+
+	form.on('end', function() {
+		res.end('success');
+	});
+
+	form.parse(req);
 });
 
 var port = 8080; // you can use any port
