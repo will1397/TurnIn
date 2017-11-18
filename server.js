@@ -1,13 +1,27 @@
+//Express
 var express = require('express');
 var app = express();
+
+//Node server/io packages
 const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
 var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+
+//User authentication persistence package
 var passport = require('passport');
+
+//MySQL database package
 var mysql = require('mysql');
+
+//Password Encryption packages
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 var con = mysql.createConnection({
     host: "localhost",
@@ -77,7 +91,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 **/
 
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/uploads'));
 
@@ -109,9 +122,8 @@ io.on('connection', function(socket) {
 });
 
 app.post('/SignUp.ejs', function(req, res) {
-	//res.send('Username: ' + req.params.user_name); //test
-	
 	if (req.body.user_name && req.body.user_password) {
+		var name = req.body.full_name;
         var uname = req.body.user_name;
         var pw = req.body.user_password;
 
@@ -119,12 +131,23 @@ app.post('/SignUp.ejs', function(req, res) {
 		var sql = 'SELECT * FROM Users WHERE username = ?';
 		con.query(sql, [uname], function(err, result) {
 			if (err) throw err;
-			console.log(result);
+			if (result.length <= 0) { //username not found, add new person to Users table
+				//Use bcrypt to hash password
+				var hash = bcrypt.hashSync(pw, saltRounds);
+
+				//Save hash into DB
+				sql = "INSERT INTO Users (name, username, password) VALUES ('" + name + "', '" + uname + "', '" + hash + "')";
+				con.query(sql, function(err, result) {
+					if (err) throw err;
+                    res.render('SignUp', {msg: 'Success!'});
+                });
+            }
+
+			else {
+				res.render('SignUp', {msg: 'Username is already in use!'});
+			}
 		});
 	}
-
-	//if username and password are not already used/ person does not already have an account:
-	res.render('SignUp', {msg: 'Success!'});
 });
 
 app.post('/upload', function(req, res) {
