@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<% include ../partials/head.ejs %>
+	</head>
+<body id="body-signup">
+
+	<header><% include ../partials/header.ejs %></header>
+
+   <div class="container" id="signup-container">
+		<form class="well form-horizontal" action=" " method="post" id="contact_form">
+			<p>
+
+			<!-- Form Name -->
+			<legend><h2><b>Sign Up</b></h2></legend><br>
+
+			<!-- Text input-->
+			<div class="form-group">
+			  <label class="col-md-4 control-label">Name</label>
+			  <div class="col-md-4 inputGroupContainer">
+			  <div class="input-group">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input  name="first_name" placeholder="First and Last Name" class="form-control"  type="text" required>
+				</div>
+			  </div>
+			</div>
+			  
+			<!-- Text input-->
+			<div class="form-group">
+			  <label class="col-md-4 control-label">Username</label>  
+			  <div class="col-md-4 inputGroupContainer">
+			  <div class="input-group">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input  name="user_name" placeholder="Username" class="form-control"  type="text" required
+					  pattern="([a-zA-Z]|\d)">
+				</div>
+			  </div>
+			</div>
+
+			<!-- Text input-->
+			<div class="form-group">
+			  <label class="col-md-4 control-label" >Password</label> 
+				<div class="col-md-4 inputGroupContainer">
+				<div class="input-group">
+			  <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+			  <input name="user_password" placeholder="Password" class="form-control"  type="password" required
+					 pattern="([a-zA-Z]|\d){6,}"
+					 title="Password must be at least 6 characters long">
+				</div>
+			  </div>
+			</div>
+
+			<!-- Button -->
+			<div class="form-group">
+			  <label class="col-md-4 control-label"></label>
+			  <div class="col-md-4"><br>
+				<button type="submit" class="btn btn-primary" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSUBMIT <span class="glyphicon glyphicon-send"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
+			  </div>
+			</div>
+
+			<!-- Error Message -->
+			<p><%= msg %></p>
+
+			</fieldset>
+		</form>
+	</div>
+</body>
+</html>

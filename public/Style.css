@@ -20,6 +20,11 @@
     text-align: center;
 }
 
+#body-managefiles {
+    background-image:url(https://static.vecteezy.com/system/resources/previews/000/095/282/original/unique-polygon-background-vector.jpg);
+    text-align: center;
+}
+
 #hero{
   background-image:url(https://static.vecteezy.com/system/resources/previews/000/095/282/original/unique-polygon-background-vector.jpg);
   background-size:cover;
@@ -36,7 +41,7 @@
   font-size:36px;
   -ms-transform: translate(0,-50%); /* IE 9 */
     -webkit-transform: translate(0,-50%); /* Safari */
-    transform: translate(0,-50%);  
+    transform: translate(0,-50%);
 }
 
 .navbar {

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../partials/head.ejs %>
+</head>
+<body id="fileinput-body">
+
+<header><% include ../partials/header.ejs %></header>
+
+<div class="container" id="file-container">
+    <div class="row" id="file-row">
+        <div class="col-xs-12">
+            <div class="well well-lg">
+                <span id="uploadicon" class="glyphicon glyphicon-inbox"></span>
+                <h2>File Upload</h2>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar"></div>
+                </div>
+                <button class="btn btn-lg upload-btn" type="button">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="upload-input" type="file" name="uploads[]" multiple="multiple"></br>
+
+<script src="upload.js"></script>
+</body>
+</html>

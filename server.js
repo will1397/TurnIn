@@ -12,16 +12,13 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "lexijr929"
+    password: "lexijr929",
+	database: "TurnIn"
 });
 
 con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-    con.query("USE TurnIn;", function(err, result) {
-    	if (err) throw err;
-    	console.log("Using TurnIn database");
-	});
 });
 
 /**
@@ -79,11 +76,29 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 **/
 
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/uploads'));
 
 app.get('/', function(req, res) {
-	res.sendFile('/public/MainPage.html', {root: __dirname})
+	res.render('MainPage');
+});
+
+app.get('/SignUp.ejs', function(req, res) {
+	res.render('SignUp', {msg: ''});
+});
+
+app.get('/Login.ejs', function(req, res) {
+	res.render('Login');
+});
+
+app.get('/FileInput.ejs', function(req, res) {
+    res.render('FileInput');
+});
+
+app.get('/ManageFileboxes.ejs', function(req, res) {
+    res.render('ManageFileboxes');
 });
 
 io.on('connection', function(socket) {
@@ -93,12 +108,23 @@ io.on('connection', function(socket) {
 	});
 });
 
-app.post('/SignUp.html', function(req, res) {
-	res.send('Username: ' + req.params.user_name); //test
+app.post('/SignUp.ejs', function(req, res) {
+	//res.send('Username: ' + req.params.user_name); //test
 	
 	if (req.body.user_name && req.body.user_password) {
+        var uname = req.body.user_name;
+        var pw = req.body.user_password;
+
 		//check if username and password can be used with call to MySQL DB
+		var sql = 'SELECT * FROM Users WHERE username = ?';
+		con.query(sql, [uname], function(err, result) {
+			if (err) throw err;
+			console.log(result);
+		});
 	}
+
+	//if username and password are not already used/ person does not already have an account:
+	res.render('SignUp', {msg: 'Success!'});
 });
 
 app.post('/upload', function(req, res) {
@@ -107,7 +133,7 @@ app.post('/upload', function(req, res) {
 
 	form.uploadDir = (__dirname + '/uploads');
 	form.on('file', function(field, file) {
-		fs.rename(file.path, path.join(form.uploadDir, file.name));
+        fs.renameSync(file.path, path.join(form.uploadDir, file.name));
 	});
 
 	form.on('error', function(err) {
@@ -119,6 +145,11 @@ app.post('/upload', function(req, res) {
 	});
 
 	form.parse(req);
+    app.use(express.static(__dirname + '/uploads'));
+});
+
+app.get('FileInput.html', function(req, res) {
+
 });
 
 var port = 8080; // you can use any port
