@@ -8,7 +8,7 @@
     <header><% include ../partials/header.ejs %></header>
 
     <div class="container" id="signup-container">
-        <form class="well form-horizontal" action=" " method="post" id="contact_form">
+        <form class="well form-horizontal" action="login" method="post" id="contact_form">
             <fieldset>
 
                 <!-- Form Name -->
@@ -40,9 +40,6 @@
                     </div>
                 </div>
 
-                <!-- Success message -->
-                <div class="alert alert-success" role="alert" id="success_message">Success <i class="glyphicon glyphicon-thumbs-up"></i> Success!.</div>
-
                 <!-- Button -->
                 <div class="form-group">
                     <label class="col-md-4 control-label"></label>
@@ -50,6 +47,9 @@
                         <button type="submit" class="btn btn-primary" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSUBMIT <span class="glyphicon glyphicon-log-in"></span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</button>
                     </div>
                 </div>
+
+                <!-- Error Message -->
+                <p><%= msg %></p>
 
             </fieldset>
         </form>

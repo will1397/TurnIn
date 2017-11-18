@@ -7,6 +7,16 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+//Add authentication session
+var session = require('client-sessions');
+app.use(session({
+	cookieName: 'session',
+	secret: 'foritsalwaysfairweather',
+	duration: 30 * 60 * 1000,
+	activeDuration: 5 * 60 * 1000,
+	secure: true
+}));
+
 var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
@@ -34,6 +44,15 @@ con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
 });
+
+function checkLoggedIn (req, res, next) {
+	if (!req.user) {
+		res.redirect('Login');
+	}
+	else {
+		next();
+	}
+}
 
 /**
 var mongo = require('mongodb');
@@ -103,7 +122,7 @@ app.get('/SignUp.ejs', function(req, res) {
 });
 
 app.get('/Login.ejs', function(req, res) {
-	res.render('Login');
+	res.render('Login', {msg: ''});
 });
 
 app.get('/FileInput.ejs', function(req, res) {
@@ -121,7 +140,7 @@ io.on('connection', function(socket) {
 	});
 });
 
-app.post('/SignUp.ejs', function(req, res) {
+app.post('/signup', function(req, res) {
 	if (req.body.user_name && req.body.user_password) {
 		var name = req.body.full_name;
         var uname = req.body.user_name;
@@ -131,16 +150,20 @@ app.post('/SignUp.ejs', function(req, res) {
 		var sql = 'SELECT * FROM Users WHERE username = ?';
 		con.query(sql, [uname], function(err, result) {
 			if (err) throw err;
+
 			if (result.length <= 0) { //username not found, add new person to Users table
 				//Use bcrypt to hash password
-				var hash = bcrypt.hashSync(pw, saltRounds);
+				bcrypt.hash(pw, saltRounds, function(err, hash) {
 
-				//Save hash into DB
-				sql = "INSERT INTO Users (name, username, password) VALUES ('" + name + "', '" + uname + "', '" + hash + "')";
-				con.query(sql, function(err, result) {
-					if (err) throw err;
-                    res.render('SignUp', {msg: 'Success!'});
-                });
+                    //Save hash into DB
+                    sql = "INSERT INTO Users (name, username, password) VALUES ('" + name + "', '" + uname + "', '" + hash + "')";
+                    con.query(sql, function(err, result) {
+                        if (err) throw err;
+                        //Save user session
+                        req.session.user = uname;
+                        res.render('SignUp', {msg: 'Success!'});
+                    });
+				});
             }
 
 			else {
@@ -148,6 +171,35 @@ app.post('/SignUp.ejs', function(req, res) {
 			}
 		});
 	}
+});
+
+app.post('/login', function(req, res) {
+	var uname = req.body.user_name;
+	var pw = req.body.user_password;
+
+	var sql = 'SELECT * FROM Users WHERE username = ?';
+	con.query(sql, [uname], function(err, result) {
+		if (err) throw err;
+
+		if (result.length <= 0) {
+			res.render('Login', {msg: 'Login Failed! Username not found'})
+		}
+
+		else {
+            bcrypt.compare(pw, result[0].password, function (err, re) {
+                if (re === true) {
+                    //Save user session
+                    req.session.user = uname;
+                    res.render('Login', {msg: 'Success!'});
+                }
+                else {
+                    res.render('Login', {msg: 'Login Failed! Incorrect Password'})
+					console.log(pw);
+                    console.log(result[0].password);
+                }
+            });
+        }
+	});
 });
 
 app.post('/upload', function(req, res) {
@@ -171,8 +223,13 @@ app.post('/upload', function(req, res) {
     app.use(express.static(__dirname + '/uploads'));
 });
 
-app.get('FileInput.html', function(req, res) {
+app.get('/FileInput.ejs', function(req, res) {
+	res.render('FileInput');
+});
 
+app.get('/Logout', function(req, res) {
+	req.session.reset();
+	res.redirect('/');
 });
 
 var port = 8080; // you can use any port
