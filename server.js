@@ -45,7 +45,7 @@ con.connect(function(err) {
     console.log("Connected!");
 });
 
-function checkLoggedIn (req, res, next) {
+function checkLoggedIn (req, res, next) { //TODO - add to get commands
 	if (!req.user) {
 		res.redirect('Login');
 	}
@@ -53,61 +53,6 @@ function checkLoggedIn (req, res, next) {
 		next();
 	}
 }
-
-/**
-var mongo = require('mongodb');
-var MongoClient = require('mongodb').MongoClient
-    , assert = require('assert');
-
-// Connection URL
-var url = 'mongodb://localhost:27017/TurnIn';
-
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, db) {
-    assert.equal(null, err);
-    console.log("Connected successfully to server");
-
-    db.close();
-});
- **/
-
-/**
-//Import the mongoose module
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
-var userSchema = new Schema({
-	name: String,
-	username: String,
-	password: String
-});
-
-var FileboxSchema = new Schema({
-	username: String,
-	boxname: String,
-	timeCreated: { type: Date, default: Date.now},
-	timeActive: {type: Date}
-});
-
-var FileSchema = new Schema({
-	boxname: String,
-
-})
-
-var userModel = mongoose.model('userModel', userSchema);
-
-//Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1/TurnIn';
-mongoose.connect(mongoDB, {
-    useMongoClient: true
-});
-
-//Get the default connection
-var db = mongoose.connection;
-
-//Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-**/
 
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
@@ -193,7 +138,7 @@ app.post('/login', function(req, res) {
                     res.render('Login', {msg: 'Success!'});
                 }
                 else {
-                    res.render('Login', {msg: 'Login Failed! Incorrect Password'})
+                    res.render('Login', {msg: 'Login Failed! Incorrect Password'});
 					console.log(pw);
                     console.log(result[0].password);
                 }
