@@ -25,7 +25,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db_setup": "cd db; python setupdb.py"
   },
   "author": "",
   "license": "ISC"
