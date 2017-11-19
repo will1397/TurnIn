@@ -1,6 +1,14 @@
 //Express
 var express = require('express');
 var app = express();
+var nconf = require('nconf');
+
+nconf.file({
+  file: './config/config.json'
+  });
+  if(!Object.keys(nconf.get()).length) {
+    throw new Error('Unable to load config file. Check to make sure config/config.json exists');
+  }
 
 //Node server/io packages
 var bodyParser = require('body-parser');
@@ -42,13 +50,7 @@ var mysql = require('mysql');
 //Password Encryption packages
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
-
-var con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "lexijr929",
-	database: "TurnIn"
-});
+var con = mysql.createConnection(nconf.get('mysql'));
 
 con.connect(function(err) {
     if (err) throw err;
