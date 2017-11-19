@@ -18,6 +18,15 @@ app.use(sessions({
     }
 }));
 
+app.use(sessions({
+	cookieName: 'fileboxcode',
+	secret: 'once3492upon02543a043235234time32412',
+	duration: 30 * 60 * 1000,
+	cookie: {
+		ephemeral: true
+	}
+}));
+
 var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
@@ -155,9 +164,11 @@ app.post('/login', function(req, res) {
 app.post('/upload', function(req, res) {
 	var form = new formidable.IncomingForm();
 	form.multiples = true;
+	var name;
 
 	form.uploadDir = (__dirname + '/uploads');
 	form.on('file', function(field, file) {
+		name = file.name;
         fs.renameSync(file.path, path.join(form.uploadDir, file.name));
 	});
 
@@ -166,11 +177,23 @@ app.post('/upload', function(req, res) {
 	});
 
 	form.on('end', function() {
-		res.end('success');
+        app.use(express.static(__dirname + '/uploads'));
+
+        //Add file to filebox in database
+		var sql = 'SELECT * FROM Filebox WHERE code = ?';
+		con.query(sql, [req.fileboxcode.code], function(err, result) {
+			if (err) throw err;
+
+			sql = "INSERT INTO Files (boxname, filename, username) VALUES ('" + result[0].boxname + "', '" + name + "', '" + result[0].username + "');";
+			console.log(sql);
+			con.query(sql, function(err, re) {
+				if (err) throw err;
+				res.end('success');
+			});
+		});
 	});
 
 	form.parse(req);
-    app.use(express.static(__dirname + '/uploads'));
 });
 
 app.post('/getFiles', function(req, res) {
@@ -189,15 +212,15 @@ app.post('/getFiles', function(req, res) {
 });
 
 app.post('/fileboxSearch', function(req, res) {
-	var code = req.body.boxcode;
-
 	var sql = 'SELECT * FROM Filebox WHERE code = ?';
-	con.query(sql, [code], function(err, result) {
+	con.query(sql, [req.body.boxcode], function(err, result) {
 		if (err) throw err;
+
 		if (result.length === 0) {
 			res.redirect('/');
 		}
 		else {
+			req.fileboxcode.code = req.body.boxcode;
 			res.render('FileInput');
 		}
 	})
