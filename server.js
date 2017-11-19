@@ -5,7 +5,7 @@ var app = express();
 //Node server/io packages
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false})); //sometimes it's true, sometimes it's false; who knows
 
 //Add authentication session
 var sessions = require('client-sessions');
@@ -79,7 +79,7 @@ app.get('/FileInput.ejs', function(req, res) {
 app.get('/ManageFileboxes.ejs', checkLoggedIn, function(req, res) {
 	var sql = 'SELECT * FROM Filebox WHERE username = ?';
 	con.query(sql, [req.session.user], function(err, result) {
-		res.render('ManageFileboxes', {box: result, fi: []}); //will return either empty array or array with values
+		res.render('ManageFileboxes', {box: result}); //will return either empty array or array with values
 	});
 });
 
@@ -183,10 +183,24 @@ app.post('/getFiles', function(req, res) {
 
         con.query(sql, function (err, result) {
             if (err) throw err;
-            //res.render('ManageFileboxes', {box: re, fi: result});
             res.send(result);
         });
     });
+});
+
+app.post('/fileboxSearch', function(req, res) {
+	var code = req.body.boxcode;
+
+	var sql = 'SELECT * FROM Filebox WHERE code = ?';
+	con.query(sql, [code], function(err, result) {
+		if (err) throw err;
+		if (result.length === 0) {
+			res.redirect('/');
+		}
+		else {
+			res.render('FileInput');
+		}
+	})
 });
 
 app.get('/FileInput.ejs', function(req, res) {
