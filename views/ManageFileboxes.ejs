@@ -5,5 +5,35 @@
 </head>
 <body id="body-managefiles">
     <header><% include ../partials/header.ejs %></header>
+    <div class="container" id="file-container">
+        <div class="row" id="file-row">
+                <div class="well well-lg" id="file-well">
+                    <span id="uploadicon" class="glyphicon glyphicon-inbox"></span>
+                    <h2>Fileboxes</h2>
+                    <div class="btn-group">
+                        <ul>
+                            <% box.forEach(function(obj) { %>
+                            <button
+                                    type="button"
+                                    class="btn btn-primary"
+                                    onclick="showFiles(this.id);"
+                                    id=<%= obj.boxname %>>
+                                    <%= obj.boxname %>
+                            </button>
+                            <% }) %>
+                        </ul>
+                    </div>
+
+                    <ul>
+                       <% fi.forEach(function(obj) { %>
+                           <a href=<%= obj.filename %>><%= obj.filename %></a>
+                       <% }) %>
+                    </ul>
+                </div>
+        </div>
+    </div>
+
+    <div class="container" id="fc"></div>
+    <script src="files.js"></script>
 </body>
 </html>

@@ -3,18 +3,19 @@ var express = require('express');
 var app = express();
 
 //Node server/io packages
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({extended: true}));
+var bodyParser = require('body-parser');
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 //Add authentication session
-var session = require('client-sessions');
-app.use(session({
+var sessions = require('client-sessions');
+app.use(sessions({
 	cookieName: 'session',
-	secret: 'foritsalwaysfairweather',
+	secret: 'for1010itsalways1001fairweather0101',
 	duration: 30 * 60 * 1000,
-	activeDuration: 5 * 60 * 1000,
-	secure: true
+	cookie: {
+        ephemeral: true //ends the cookie when the browser closes (not the window/tab but the browser itself)
+    }
 }));
 
 var path = require('path');
@@ -45,9 +46,10 @@ con.connect(function(err) {
     console.log("Connected!");
 });
 
-function checkLoggedIn (req, res, next) { //TODO - add to get commands
-	if (!req.user) {
-		res.redirect('Login');
+function checkLoggedIn (req, res, next) {
+	if (!req.session.user) {
+		req.session.reset();
+		res.redirect('/Login.ejs');
 	}
 	else {
 		next();
@@ -74,8 +76,11 @@ app.get('/FileInput.ejs', function(req, res) {
     res.render('FileInput');
 });
 
-app.get('/ManageFileboxes.ejs', function(req, res) {
-    res.render('ManageFileboxes');
+app.get('/ManageFileboxes.ejs', checkLoggedIn, function(req, res) {
+	var sql = 'SELECT * FROM Filebox WHERE username = ?';
+	con.query(sql, [req.session.user], function(err, result) {
+		res.render('ManageFileboxes', {box: result, fi: []}); //will return either empty array or array with values
+	});
 });
 
 io.on('connection', function(socket) {
@@ -166,6 +171,22 @@ app.post('/upload', function(req, res) {
 
 	form.parse(req);
     app.use(express.static(__dirname + '/uploads'));
+});
+
+app.post('/getFiles', function(req, res) {
+	var filebox = req.body.name;
+
+    var sql = 'SELECT * FROM Filebox WHERE username = ?';
+    con.query(sql, [req.session.user], function(err, re) {
+
+        var sql = "SELECT * FROM Files WHERE username = '" + req.session.user + "' AND boxname = '" + filebox + "';";
+
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            //res.render('ManageFileboxes', {box: re, fi: result});
+            res.send(result);
+        });
+    });
 });
 
 app.get('/FileInput.ejs', function(req, res) {
