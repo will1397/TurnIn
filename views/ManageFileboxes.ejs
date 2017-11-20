@@ -26,12 +26,31 @@
                         </ul>
                     </div>
 
-                    <div class="containter" id="options-container">
-                        <button id="success-button" type ="button" class="btn btn-success" onclick="addBox();">Add Filebox</button>
+                    <div class="row" id="manager">
+                        <h2>Manage Fileboxes</h2>
+                        <form class="form-horizontal" action="addBox" method="post">
+                            <div class="input-group">
+                                <input name="newboxname" placeholder="Add Box" type="text" class="form-control" required>
+                                <span class="input-group-btn">
+                                    <button id="success-button" type ="submit" class="btn btn-success">Add Filebox</button>
+                                </span>
+                            </div>
+                        </form>
+
                         <% if (box.length > 0) { %>
-                            <button type ="button" class="btn btn-danger" onclick="removeBox();">Remove Filebox</button>
+                            <form class="form-horizontal" action="removeBox" method="post">
+                                <div class="input-group">
+                                    <input name="oldboxname" placeholder="Remove Box" type="text" class="form-control" required>
+                                    <span class="input-group-btn">
+                                        <button type ="submit" class="btn btn-danger">Remove Filebox</button>
+                                    </span>
+                                </div>
+                            </form>
                         <% } %>
                     </div>
+
+                    <!-- Error Message -->
+                    <p><%= msg %></p>
                 </div>
         </div>
     </div>
