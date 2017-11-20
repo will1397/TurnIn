@@ -25,12 +25,21 @@
                 </form></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
+                <%if (login) { %>
+                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%=user%>'s Account <b class="caret"></b></a>
+                <% } else { %>
+                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
+                <% } %>
                     <ul class="dropdown-menu">
-                        <li><a href="SignUp.ejs"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                        <li><a href="Login.ejs"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                        <li class="divider"></li>
-                        <li><a href="Logout"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
+                        <%if (!login) { %>
+                          <li><a href="SignUp.ejs"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                          <li><a href="Login.ejs"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                          <li class="divider"></li>
+                        <% } else { %>
+                          <li><a href="Settings.ejs"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                          <li class="divider"></li>
+                          <li><a href="Logout"><span class="glyphicon glyphicon-log-out"> Logout</span></a></li>
+                        <% } %>
                     </ul>
                 </li>
             </ul>

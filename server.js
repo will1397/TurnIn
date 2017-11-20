@@ -16,6 +16,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false})); //sometimes it's true, sometimes it's false; who knows
 
+
 //Add authentication session
 var sessions = require('client-sessions');
 app.use(sessions({
@@ -35,6 +36,20 @@ app.use(sessions({
 		ephemeral: true
 	}
 }));
+
+app.use(function (req, res, next) {
+  if(req.session.user){
+    res.locals.login = true;
+    res.locals.user = req.session.user;
+  }
+  else{
+    res.locals.login = false;
+  }
+  console.log(res.locals.login);
+  next();
+});
+
+
 
 var path = require('path');
 var formidable = require('formidable');
@@ -95,6 +110,11 @@ app.get('/ManageFileboxes.ejs', checkLoggedIn, function(req, res) {
 	});
 });
 
+app.get('/Settings.ejs', function(req,res) {
+  res.render('Settings');
+});
+
+
 io.on('connection', function(socket) {
 	console.log('a user connected');
 	socket.on('disconnect', function() {
@@ -123,6 +143,8 @@ app.post('/signup', function(req, res) {
                         if (err) throw err;
                         //Save user session
                         req.session.user = uname;
+                        res.locals.login = true;
+                        res.locals.user = req.session.user;
                         res.render('SignUp', {msg: 'Success!'});
                     });
 				});
@@ -152,7 +174,10 @@ app.post('/login', function(req, res) {
                 if (re === true) {
                     //Save user session
                     req.session.user = uname;
-                    res.render('Login', {msg: 'Success!'});
+                    res.locals.login = true;
+                    res.locals.user = req.session.user;
+
+                    res.render('Login',{msg: 'Success'});
                 }
                 else {
                     res.render('Login', {msg: 'Login Failed! Incorrect Password'});
@@ -283,6 +308,7 @@ app.get('/Logout', function(req, res) {
 	req.session.reset();
 	res.redirect('/');
 });
+
 
 var port = 8080; // you can use any port
 app.listen(port);
