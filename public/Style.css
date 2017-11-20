@@ -127,3 +127,17 @@
 #searchbar {
     padding: 40px;
 }
+
+#success-button {
+    background-color: #00B9BC;
+}
+
+#success-button {
+    margin: 5px;
+}
+
+.btn-justified {
+    padding: 5px;
+    display: table;
+    width: 100%;
+}

@@ -10,18 +10,27 @@
                 <div class="well well-lg" id="file-well">
                     <span id="uploadicon" class="glyphicon glyphicon-inbox"></span>
                     <h2>Fileboxes</h2>
-                    <div class="btn-group">
+                    <div class="btn-group btn-group-justified" id="boxes">
                         <ul>
                             <% box.forEach(function(obj) { %>
+                            <div class="btn-justified col-xs-10 col-md-3">
                             <button
                                     type="button"
-                                    class="btn btn-primary"
+                                    class="btn btn-primary btn-block"
                                     onclick="showFiles(this.id);"
                                     id=<%= obj.boxname %>>
                                     <%= obj.boxname %>
                             </button>
+                            </div>
                             <% }) %>
                         </ul>
+                    </div>
+
+                    <div class="containter" id="options-container">
+                        <button id="success-button" type ="button" class="btn btn-success" onclick="addBox();">Add Filebox</button>
+                        <% if (box.length > 0) { %>
+                            <button type ="button" class="btn btn-danger" onclick="removeBox();">Remove Filebox</button>
+                        <% } %>
                     </div>
                 </div>
         </div>
