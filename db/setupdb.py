@@ -31,8 +31,9 @@ def setupDB():
               (
               username VARCHAR(150) NOT NULL,
               boxname VARCHAR(150) NOT NULL,
-              time INT(100) NOT NULL,
-              code INT(11)
+              code INT(11),
+              time DATETIME,
+              expiration DATETIME
               );''')
 
   cur.execute('''CREATE TABLE IF NOT EXISTS Files
