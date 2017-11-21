@@ -106,12 +106,12 @@ app.get('/FileInput.ejs', function(req, res) {
 app.get('/ManageFileboxes.ejs', checkLoggedIn, function(req, res) {
 	var sql = 'SELECT * FROM Filebox WHERE username = ?';
 	con.query(sql, [req.session.user], function(err, result) {
-		res.render('ManageFileboxes', {box: result, msg: ""}); //will return either empty array or array with values
+		res.render('ManageFileboxes', {box: result}); //will return either empty array or array with values
 	});
 });
 
 app.get('/Settings.ejs', function(req,res) {
-  res.render('Settings');
+  res.render('Settings', {msg: ''});
 });
 
 
@@ -227,14 +227,19 @@ app.post('/upload', function(req, res) {
 app.post('/getFiles', function(req, res) {
 	var filebox = req.body.name;
 
-    var sql = 'SELECT * FROM Filebox WHERE username = ?';
+    var sql = "SELECT * FROM Filebox WHERE username = '" +  req.session.user + "' AND boxname = '" + filebox + "';";
     con.query(sql, [req.session.user], function(err, re) {
 
         var sql = "SELECT * FROM Files WHERE username = '" + req.session.user + "' AND boxname = '" + filebox + "';";
 
         con.query(sql, function (err, result) {
             if (err) throw err;
-            res.send(result);
+
+            var array = new Array();
+            array.push(re[0].code);
+            array.push(result);
+
+            res.send(array);
         });
     });
 });
@@ -270,19 +275,13 @@ app.post('/addBox', function(req, res) {
             con.query(sql, function (err, result) {
                 if (err) throw err;
 
-                sql = 'SELECT * FROM Filebox WHERE username = ?';
-                con.query(sql, [req.session.user], function (err, result) {
-                	var message = "Filebox Successfully Created, Filebox Code: " + code;
-                    res.render('ManageFileboxes', {box: result, msg: message});
-                });
+                var message = "Filebox Successfully Created, Filebox Code: " + code;
+                res.render('Settings', {msg: message});
             });
         }
 
         else {
-            sql = 'SELECT * FROM Filebox WHERE username = ?';
-            con.query(sql, [req.session.user], function (err, result) {
-                res.render('ManageFileboxes', {box: result, msg: 'Filebox Already Created'});
-            });
+			res.render('Settings', {msg: 'Filebox Already Created'});
 		}
     });
 });
@@ -293,10 +292,9 @@ app.post('/removeBox', function(req, res) {
 
 	var sql = "DELETE FROM Filebox WHERE username = '" + uname + "' AND boxname = '" + boxname + "';";
 	con.query(sql, function(err, re) {
-        sql = 'SELECT * FROM Filebox WHERE username = ?';
-        con.query(sql, [req.session.user], function (err, result) {
-            res.render('ManageFileboxes', {box: result, msg: ""});
-        });
+		if (err) throw err;
+
+		res.render('Settings', {msg: "Box Removed If Already Created"});
 	})
 });
 
