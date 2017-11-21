@@ -64,7 +64,7 @@ var passport = require('passport');
 var mysql = require('mysql');
 
 //Password Encryption packages
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 const saltRounds = 10;
 var con = mysql.createConnection(nconf.get('mysql'));
 
