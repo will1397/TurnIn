@@ -294,7 +294,12 @@ app.post('/removeBox', function(req, res) {
 	con.query(sql, function(err, re) {
 		if (err) throw err;
 
-		res.render('Settings', {msg: "Box Removed If Already Created"});
+		sql = "DELETE FROM Files WHERE username = '" + uname + "' AND boxname = '" + boxname + "';";
+		con.query(sql, function(err, result) {
+			if (err) throw err;
+
+            res.render('Settings', {msg: "Box Removed If Already Created"});
+        })
 	})
 });
 
