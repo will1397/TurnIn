@@ -211,6 +211,7 @@ app.post('/upload', function(req, res) {
 		var sql = 'SELECT * FROM Filebox WHERE code = ?';
 		con.query(sql, [req.fileboxcode.code], function(err, result) {
 			if (err) throw err;
+            console.log(req.fileboxcode.code);
 
 			sql = "INSERT INTO Files (boxname, filename, username) VALUES ('" + result[0].boxname + "', '" + name + "', '" + result[0].username + "');";
 			console.log(sql);
