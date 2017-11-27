@@ -313,6 +313,6 @@ app.get('/Logout', function(req, res) {
 });
 
 
-var port = 8080; // you can use any port
+var port = 80; // you can use any port
 app.listen(port);
 console.log('Listening on: ' + port);

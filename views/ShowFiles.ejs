@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <% include ../partials/head.ejs %>
+</head>
+<body>
+    <%if (files.length > 0) { %>
+    <ul>
+        <% files.forEach(function(obj) { %>
+        <a href= <% obj.filename %>><% obj.filename %></a>
+        <% }) %>
+    </ul>
+    <% } %>
+</body>
+</html>
