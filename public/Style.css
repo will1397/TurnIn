@@ -141,3 +141,8 @@
 #manager {
     padding: 10px;
 }
+
+#message {
+    display: table-cell;
+    vertical-align: middle;
+}

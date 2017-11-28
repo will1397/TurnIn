@@ -2,6 +2,9 @@ $('.upload-btn').on('click', function (){
     $('#upload-input').click();
     $('.progress-bar').text('0%');
     $('.progress-bar').width('0%');
+
+    var element= document.getElementById("message");
+    element.style.display = "none";
 });
 
 $('#upload-input').on('change', function(){
@@ -16,6 +19,16 @@ $('#upload-input').on('change', function(){
         // loop through all the selected files and add them to the formData object
         for (var i = 0; i < files.length; i++) {
             var file = files[i];
+
+            var str = file.name;
+            if (str.indexOf(' ') >= 0) {
+                var html = "<h5>No Spaces Allowed In File Names</h5>";
+                $('#message').html(html);
+
+                var element= document.getElementById("message");
+                element.style.display = "block";
+                return;
+            }
 
             // add the files to formData object for the data payload
             formData.append('uploads[]', file, file.name);
