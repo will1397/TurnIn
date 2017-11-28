@@ -259,8 +259,18 @@ app.post('/fileboxSearch', function(req, res) {
 			res.redirect('/');
 		}
 		else {
-			req.fileboxcode.code = req.body.boxcode;
-			res.render('FileInput');
+
+            var currTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+            var time = moment(result[0].expiration, "America/New_York");
+
+            if (currTime > time.format('YYYY-MM-DD hh:mm:ss')) {
+            	res.redirect('/');
+			}
+
+			else {
+                req.fileboxcode.code = req.body.boxcode;
+                res.render('FileInput');
+            }
 		}
 	})
 });
