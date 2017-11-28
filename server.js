@@ -261,9 +261,11 @@ app.post('/getFiles', function(req, res) {
             var array = new Array();
             array.push(re[0].code);
 
-            var time = moment.tz(re[0].expiration, "America/New_York");
+            var time = moment(re[0].expiration);
             time.format();
-            array.push(time.format('YYYY-MM-DD hh:mm:ss'));
+            array.push(time.format('YYYY-MM-DD HH:mm:ss'));
+	    console.log(time.format('YYYY-MM-DD HH:mm:ss'));
+
 
             array.push(result);
 
@@ -282,12 +284,13 @@ app.post('/fileboxSearch', function(req, res) {
 		}
 		else {
 
-            var currTime = moment.tz(Date.now(),"America/New_York").format('YYYY-MM-DD hh:mm:ss');
-            var time = moment(result[0].expiration, "America/New_York");
+            var currTime = moment.tz(Date.now(),"America/New_York").format('YYYY-MM-DD HH:mm:ss');
+            var time = moment(result[0].expiration).format('YYYY-MM-DD HH:mm:ss');
+	    console.log(result);
 	    console.log(currTime);
-	    console.log(time.format('YYYY-MM-DD hh:mm:ss'));
+	    console.log(time);
 
-            if (currTime > time.format('YYYY-MM-DD hh:mm:ss')) {
+            if (currTime > time) {
             	res.redirect('/Expired.ejs');
 			}
 
