@@ -83,37 +83,60 @@ function checkLoggedIn (req, res, next) {
 	}
 }
 
+function checkFileboxFound (req, res, next) {
+	if (!req.fileboxcode.code) {
+		res.redirect('/');
+	}
+	else {
+		next();
+	}
+}
+
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/uploads'));
 
 app.get('/', function(req, res) {
+    req.fileboxcode.reset();
 	res.render('MainPage');
 });
 
 app.get('/SignUp.ejs', function(req, res) {
+    req.fileboxcode.reset();
 	res.render('SignUp', {msg: ''});
 });
 
 app.get('/Login.ejs', function(req, res) {
+    req.fileboxcode.reset();
 	res.render('Login', {msg: ''});
 });
 
-app.get('/FileInput.ejs', function(req, res) {
+app.get('/FileInput.ejs', checkFileboxFound, function(req, res) {
     res.render('FileInput');
 });
 
 app.get('/ManageFileboxes.ejs', checkLoggedIn, function(req, res) {
+    req.fileboxcode.reset();
 	var sql = 'SELECT * FROM Filebox WHERE username = ?';
 	con.query(sql, [req.session.user], function(err, result) {
 		res.render('ManageFileboxes', {box: result}); //will return either empty array or array with values
 	});
 });
 
-app.get('/Settings.ejs', function(req,res) {
-  res.render('Settings', {msg: ''});
+app.get('/Settings.ejs', checkLoggedIn, function(req,res) {
+    req.fileboxcode.reset();
+    res.render('Settings', {msg: ''});
 });
 
+app.get('/Expired.ejs', function(req, res) {
+    req.fileboxcode.reset();
+	res.render('Expired');
+});
+
+app.get('/NotFound.ejs', function(req, res) {
+    req.fileboxcode.reset();
+	res.render('NotFound');
+});
 
 io.on('connection', function(socket) {
 	console.log('a user connected');
@@ -256,7 +279,7 @@ app.post('/fileboxSearch', function(req, res) {
 		if (err) throw err;
 
 		if (result.length === 0) {
-			res.redirect('/');
+			res.redirect('/NotFound.ejs');
 		}
 		else {
 
@@ -264,7 +287,7 @@ app.post('/fileboxSearch', function(req, res) {
             var time = moment(result[0].expiration, "America/New_York");
 
             if (currTime > time.format('YYYY-MM-DD hh:mm:ss')) {
-            	res.redirect('/');
+            	res.redirect('/Expired.ejs');
 			}
 
 			else {
@@ -347,6 +370,6 @@ app.get('/Logout', function(req, res) {
 });
 
 
-var port = 8080; // you can use any port
+var port = 80; // you can use any port
 app.listen(port);
 console.log('Listening on: ' + port);
