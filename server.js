@@ -2,7 +2,7 @@
 var express = require('express');
 var app = express();
 var nconf = require('nconf');
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 nconf.file({
   file: './config/config.json'
@@ -45,7 +45,6 @@ app.use(function (req, res, next) {
   else{
     res.locals.login = false;
   }
-  console.log(res.locals.login);
   next();
 });
 
@@ -262,7 +261,7 @@ app.post('/getFiles', function(req, res) {
             var array = new Array();
             array.push(re[0].code);
 
-            var time = moment(re[0].expiration, "America/New_York");
+            var time = moment.tz(re[0].expiration, "America/New_York");
             time.format();
             array.push(time.format('YYYY-MM-DD hh:mm:ss'));
 
@@ -283,8 +282,10 @@ app.post('/fileboxSearch', function(req, res) {
 		}
 		else {
 
-            var currTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+            var currTime = moment.tz(Date.now(),"America/New_York").format('YYYY-MM-DD hh:mm:ss');
             var time = moment(result[0].expiration, "America/New_York");
+	    console.log(currTime);
+	    console.log(time.format('YYYY-MM-DD hh:mm:ss'));
 
             if (currTime > time.format('YYYY-MM-DD hh:mm:ss')) {
             	res.redirect('/Expired.ejs');
@@ -299,7 +300,7 @@ app.post('/fileboxSearch', function(req, res) {
 });
 
 app.post('/addBox', function(req, res) {
-	var creationTime = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+	var creationTime = moment.tz(Date.now(),"America/New_York").format('YYYY-MM-DD HH:mm:ss');
 	var uname = req.session.user;
 	var boxname = req.body.newboxname;
 	var code = Math.floor(Math.random() * 90000000)  + 10000000; //generate random code for box
