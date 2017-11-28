@@ -238,6 +238,11 @@ app.post('/getFiles', function(req, res) {
 
             var array = new Array();
             array.push(re[0].code);
+
+            var time = moment(re[0].expiration, "America/New_York");
+            time.format();
+            array.push(time.format('YYYY-MM-DD hh:mm:ss'));
+
             array.push(result);
 
             res.send(array);
@@ -265,13 +270,15 @@ app.post('/addBox', function(req, res) {
 	var uname = req.session.user;
 	var boxname = req.body.newboxname;
 	var code = Math.floor(Math.random() * 90000000)  + 10000000; //generate random code for box
+	var exp = req.body.expdate;
 
 	var sql = "SELECT * FROM Filebox WHERE username = '" + uname + "' AND boxname = '" + boxname + "';";
 	con.query(sql, function(err, re) {
 
 		if (re.length === 0) {
-            sql = "INSERT INTO Filebox (username, boxname, code, time) VALUES ('" +
-                uname + "', '" + boxname + "', '" + code + "', '" + creationTime + "');";
+            sql = "INSERT INTO Filebox (username, boxname, code, time, expiration) VALUES ('" +
+                uname + "', '" + boxname + "', '" + code + "', '" + creationTime + "', '" + exp + "');";
+            console.log(sql);
 
             con.query(sql, function (err, result) {
                 if (err) throw err;
@@ -304,6 +311,22 @@ app.post('/removeBox', function(req, res) {
 	})
 });
 
+app.post('/extendTime', function(req, res) {
+	var boxname = req.body.boxname;
+	var newdate = req.body.newdate;
+	var uname = req.session.user;
+
+	var sql = "UPDATE Filebox SET expiration = '" + newdate + "' WHERE username = '" + uname + "' AND boxname = '" +
+		boxname + "';";
+	console.log(sql);
+
+	con.query(sql, function(err, result) {
+		if (err) throw err;
+
+		res.render('Settings', {msg: "Expiration Date Changed If Filebox Exists"})
+	})
+});
+
 app.get('/FileInput.ejs', function(req, res) {
 	res.render('FileInput');
 });
@@ -314,6 +337,6 @@ app.get('/Logout', function(req, res) {
 });
 
 
-var port = 80; // you can use any port
+var port = 8080; // you can use any port
 app.listen(port);
 console.log('Listening on: ' + port);
