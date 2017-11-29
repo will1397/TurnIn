@@ -220,6 +220,20 @@ app.post('/upload', function(req, res) {
 	form.on('file', function(field, file) {
 		name = file.name;
         fs.renameSync(file.path, path.join(form.uploadDir, file.name));
+
+        //Add file to filebox in database
+        var sql = 'SELECT * FROM Filebox WHERE code = ?';
+        con.query(sql, [req.fileboxcode.code], function(err, result) {
+            if (err) throw err;
+            console.log(req.fileboxcode.code);
+
+            sql = "INSERT INTO Files (boxname, filename, username) VALUES ('" + result[0].boxname + "', '" + name + "', '" + result[0].username + "');";
+            console.log(sql);
+            con.query(sql, function(err, re) {
+                if (err) throw err;
+                res.end('success');
+            });
+        });
 	});
 
 	form.on('error', function(err) {
@@ -228,20 +242,6 @@ app.post('/upload', function(req, res) {
 
 	form.on('end', function() {
         app.use(express.static(__dirname + '/uploads'));
-
-        //Add file to filebox in database
-		var sql = 'SELECT * FROM Filebox WHERE code = ?';
-		con.query(sql, [req.fileboxcode.code], function(err, result) {
-			if (err) throw err;
-            console.log(req.fileboxcode.code);
-
-			sql = "INSERT INTO Files (boxname, filename, username) VALUES ('" + result[0].boxname + "', '" + name + "', '" + result[0].username + "');";
-			console.log(sql);
-			con.query(sql, function(err, re) {
-				if (err) throw err;
-				res.end('success');
-			});
-		});
 	});
 
 	form.parse(req);
