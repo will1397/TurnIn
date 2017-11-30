@@ -364,12 +364,36 @@ app.post('/extendTime', function(req, res) {
 	})
 });
 
+app.post('/deleteUser', function(req, res) {
+	var uname = req.session.user;
+
+	var sql = "DELETE FROM Users WHERE username = '" + uname + "';";
+	con.query(sql, function(err, re) {
+		if (err) throw err;
+
+		sql = "DELETE FROM Filebox WHERE username = '" + uname + "';";
+		con.query(sql, function(err, result) {
+			if (err) throw err;
+
+			sql = "DELETE FROM Files WHERE username = '" + uname + "';";
+			con.query(sql, function(err, r) {
+				if (err) throw err;
+
+				req.session.reset();
+                req.fileboxcode.reset();
+				res.redirect('/');
+			})
+		})
+	})
+});
+
 app.get('/FileInput.ejs', function(req, res) {
 	res.render('FileInput');
 });
 
 app.get('/Logout', function(req, res) {
 	req.session.reset();
+    req.fileboxcode.reset();
 	res.redirect('/');
 });
 
